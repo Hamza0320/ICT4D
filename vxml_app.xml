@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1">
+<var name="kind"/>
+<var name="tel"/>
+<menu id="menu0" dtmf="true">
+	<prompt>
+		For english press 1,
+		<audio src="http://webhosting.voxeo.net/208157/www/french_choice.wav"/> 
+	</prompt>
+	<choice next="#menu1"/>
+	<choice next="http://webhosting.voxeo.net/208157/www/french.xml"/>
+</menu>
+
+<menu id="menu1" dtmf="true">
+	<prompt>
+		<audio src="http://webhosting.voxeo.net/208157/www/welcome.wav"/> 
+		if you are a seller press 1 <break time="300"/> otherwise select one of the 	
+		following seeds that 		
+		are available for purchase: press 2 for Soybean, press 3 for Pepper
+	</prompt>
+	<choice next="#phone"/>
+	<choice next="#form2"/>
+	<choice next="#form3"/>
+</menu>
+
+<form id="phone">
+<field name="ask_info" type="number">
+         <prompt>
+            Please enter your phone number followed by a hash
+         </prompt>
+   	<filled>
+ 	<assign name="tel" expr="ask_info"/>
+	<goto next="#menu2"/>
+      </filled>
+	
+      </field>
+</form>
+
+<menu id="menu2" dtmf="true">
+
+	<prompt> 
+		Select the seed you want to sell: press 1 for Soybean, press 2 for Pepper 		
+	</prompt> 
+
+	<choice next="#form4"/>
+	<choice next="#form5"/>
+</menu>
+
+<form id="form2" dtmf="true">
+      <subdialog name="info" src="https://ict4dmali.000webhostapp.com/get_soybean.php"/>
+    <block>
+      To get in contact with a farmer who has <value expr="info.weight1"/> kilograms of soybean seeds. Call the following number, <say-as interpret-as="telephone" format="1"><value expr="info.call4"/></say-as>.
+      To get in contact with a farmer who has <value expr="info.weight2"/> kilograms of soybean seeds. Call the following number, <say-as interpret-as="telephone" format="1"><value expr="info.call5"/></say-as>.
+      To get in contact with a farmer who has <value expr="info.weight3"/> kilograms of soybean seeds. Call the following number, <say-as interpret-as="telephone" format="1"><value expr="info.call6"/></say-as>.
+    </block>
+</form>
+
+<form id="form3">
+      <subdialog name="info" src="https://ict4dmali.000webhostapp.com/get_pepper.php"/>
+    <block>
+      To get in contact with a farmer who has <value expr="info.weight1"/> kilograms of pepper seeds. Call the following number, <say-as interpret-as="telephone" format="1"><value expr="info.call4"/></say-as>.
+      To get in contact with a farmer who has <value expr="info.weight2"/> kilograms of pepper seeds. Call the following number, <say-as interpret-as="telephone" format="1"><value expr="info.call5"/></say-as>.
+      To get in contact with a farmer who has <value expr="info.weight3"/> kilograms of pepper seeds. Call the following number, <say-as interpret-as="telephone" format="1"><value expr="info.call6"/></say-as>.
+    </block>
+</form>
+
+<form id="form4">
+	<field name="Digits" type="digits">
+	<prompt>
+		Type in the quantity of the product that you want to sell in kilograms followed by a hash
+	</prompt>
+      <filled>
+	<assign name="kind" expr="'Soybean'"/>
+        <data namelist="Digits kind tel" src="https://ict4dmali.000webhostapp.com/kg.php" enctype="multipart/form-data" method="post" ></data>
+      </filled>
+    </field>
+</form>
+
+<form id="form5">
+	<field name="Digits" type="digits">
+	<prompt>
+		Type in the quantity of the product that you want to sell in kilograms 				
+		followed by a hash
+	</prompt>
+      <filled>
+	<assign name="kind" expr="'Pepper'"/>
+        <data namelist="Digits kind tel" src="https://ict4dmali.000webhostapp.com/kg.php" enctype="multipart/form-data" method="post" ></data>
+      </filled>
+    </field>
+	
+</form>
+
+</vxml>
